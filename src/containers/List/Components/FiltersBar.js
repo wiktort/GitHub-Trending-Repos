@@ -1,8 +1,10 @@
-import { observer } from "mobx-react-lite";
+// import { useState, useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 
-import { useReposStore } from "../stores/hooks";
+import { useReposStore } from '../stores/hooks';
 
-import { keyGenerator } from "../../../Shared/helpers";
+import { keyGenerator } from '../../../Shared/helpers';
+import Select from './Select';
 
 const radioName = "since";
 const since = [
@@ -11,7 +13,7 @@ const since = [
     ["monthly"]
 ];
 
-const createRadioButtons = (handler) => 
+const createRadioButtons = handler => 
     since.map(item => (
         <div key={keyGenerator()}>
             <input 
@@ -28,18 +30,32 @@ const createRadioButtons = (handler) =>
         </div>
     ));
 
-const FiltersBar = () => {
 
+
+const FiltersBar = () => {
     const { _params, fetchRepos } = useReposStore();
-    const radioHandler = e => {
-        _params.since = e.target.value;
-        fetchRepos();
+
+    // const [langs, setLangs] = useState([]);
+    
+    // useEffect(() => {
+    //     getLanguages(setLangs)
+    // }, [])
+    
+    const filtersHandler = param => {
+        const par = param; 
+        return (e) => {
+            _params[par] = e.target.value;
+            fetchRepos();
+        };
     };
     return(
         <div>
-            {createRadioButtons(radioHandler)}
+            <div>
+                {createRadioButtons(filtersHandler("since"))}
+            </div>
+            <Select callback={filtersHandler("language")}/>
         </div>
-    )
+    );
 };
 
 export default observer(FiltersBar);
