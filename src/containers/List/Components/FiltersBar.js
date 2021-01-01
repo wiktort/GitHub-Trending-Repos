@@ -33,7 +33,7 @@ const createRadioButtons = handler =>
 
 
 const FiltersBar = () => {
-    const { _params, fetchRepos } = useReposStore();
+    const { _params, fetchRepos, sortRepos } = useReposStore();
 
     // const [langs, setLangs] = useState([]);
     
@@ -48,12 +48,33 @@ const FiltersBar = () => {
             fetchRepos();
         };
     };
+    const sortHandler = e => {
+        
+        const value = Number(e.target.value);
+        const sort = value === -1 ? false : true;
+        sortRepos(sort, value);
+    };
     return(
         <div>
             <div>
                 {createRadioButtons(filtersHandler("since"))}
             </div>
-            <Select callback={filtersHandler("language")}/>
+            <div>
+                <Select callback={filtersHandler("language")}/>
+            </div>
+            <div>
+                <label key={keyGenerator()} htmlFor="sort" />
+                    <select 
+                    key={keyGenerator()}
+                    onChange={(e) => sortHandler(e)}
+                    name="sort" 
+                    id="sort"
+                    >
+                        <option key={keyGenerator()} value="-1">No sorting</option>
+                        <option key={keyGenerator()} value="0">Most stars first</option>
+                        <option key={keyGenerator()} value="1">Least stars first</option>
+                    </select>
+            </div>
         </div>
     );
 };

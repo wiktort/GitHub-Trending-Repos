@@ -17,7 +17,7 @@ const List = () => {
         fetchRepos()
     },[fetchRepos])   
 
-    const showRepos = repos.length > 0 ? createItems(repos) : null;
+    const showRepos = repos.displayed.length > 0 ? createItems(repos.displayed) : null;
 
     return (
         <div>
