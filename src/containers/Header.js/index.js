@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Header = () => (
     <StyledHeader>
         <div>
-            <p>GitHub Trending Repositories</p>
+            <h1 tabIndex={0}>GitHub Trending Repositories</h1>
         </div>
     </StyledHeader>
     );
@@ -17,6 +17,8 @@ const StyledHeader = styled.header`
     background-color: ${(props) => props.theme.colors.primary};
     color: ${(props) => props.theme.colors.lightText};
     line-height: ${(props) => props.theme.sizes.headerHeight};
-    padding-left: 2vmax;
-    z-index: 1;
+    padding-left: 20px;
+    h1{
+        font-weight: bold;
+    }
 `;

@@ -1,9 +1,9 @@
 const COLORS = {
-    text: '#202030',
-    lightText: '#FEFEFF',
-    background: '#EEE',
-    primary: '#282C34',
-    button: '#455679'
+    text: '#154634',
+    lightText: '#FEF',
+    background: '#FFF0C399',
+    primary: '#004027',
+    button: '#84001d'
 };
 
 const SIZES = {

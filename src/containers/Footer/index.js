@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Footer = () =>(
     <StyledFooter>
-        <p>Created by <a href="https://github.com/wiktort">Wiktor Tumiński</a></p>
+        <p tabIndex={0}>Created by <a href="https://github.com/wiktort">Wiktor Tumiński</a></p>
     </StyledFooter>
 );
 

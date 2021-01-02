@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import styled from 'styled-components';
 
 import { useReposStore } from '../stores/hooks';
 
@@ -66,16 +67,16 @@ const FiltersBar = () => {
     const showRadioButtons = loading ? null : createRadioButtons(filtersHandler(lex.since), params.since);
     
     return(
-        <div>
-            <div>
+        <StyledWrapper>
+            <StyledRadioDiv>
                 {showRadioButtons}
-            </div>
-            <div>
+            </StyledRadioDiv>
+            <StyledDiv>
                 <Select 
                     callback={filtersHandler(lex.language)} 
                 />
-            </div>
-            <div>
+            </StyledDiv>
+            <StyledDiv>
                 <label key={keyGenerator()} htmlFor="sort" />
                     <select 
                     key={keyGenerator()}
@@ -88,9 +89,55 @@ const FiltersBar = () => {
                         <option key={keyGenerator()} value="0">Most stars first</option>
                         <option key={keyGenerator()} value="1">Least stars first</option>
                     </select>
-            </div>
-        </div>
+            </StyledDiv>
+        </StyledWrapper>
     );
 };
 
 export default observer(FiltersBar);
+
+const StyledWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin: 1vh 0 2vh;
+    padding-bottom: 2vh;
+    border-bottom: 1px solid ${(props) => props.theme.colors.button};
+    @media (min-width: 533px){
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 21px 21px;
+    }
+    @media (min-width: 823px){
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 21px;
+    }
+`;
+
+const StyledRadioDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    line-height: 21px;
+    input, label{
+        line-height: 21px
+    }
+    @media (min-width: 533px){
+        justify-content: inherit;
+    }
+`;
+
+const StyledDiv = styled.div`
+    width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    select{
+        width: 100%;
+        height: 100%;
+    }
+    @media (min-width: 533px){
+        grid-row: 2;
+    }
+    @media (min-width: 823px){
+        grid-row: auto;
+    }
+`;

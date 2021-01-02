@@ -6,7 +6,8 @@ import { createURL } from '../../../Shared/helpers';
 class ReposStore {
     repos = {
         base: [],
-        displayed: []
+        displayed: [],
+        noData: false
     }
 
     params = {}
@@ -25,6 +26,9 @@ class ReposStore {
         getData(url)
         .then(data => {
             runInAction(()=>{
+                this.repos.noData = data.length <= 0
+                    ? true
+                    : false;
                 this.repos.base = data;
                 this.repos.displayed = data;
                 this.sortRepos();
@@ -46,7 +50,6 @@ class ReposStore {
             return;
         };
         const delta = [-1, 1][minmax];
-
         this.repos.displayed.sort((a,b) => (a.stars - b.stars) * delta);
     }
 };

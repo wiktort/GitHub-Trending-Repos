@@ -1,6 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { observer } from "mobx-react-lite";
 import { autorun, runInAction } from 'mobx';
+import styled from 'styled-components';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import { useReposStore } from "./stores/hooks";
 import ListItem from './Components/ListItem';
@@ -8,12 +11,16 @@ import FiltersBar from './Components/FiltersBar';
 
 import { keyGenerator } from '../../Shared/helpers';
 
-
-const createItems = list => 
-    list.map(item => <ListItem data={item} key={keyGenerator()} />); 
+const createItems = ({ displayed, noData }) => {
+    return noData
+        ? <li>It seems there are no trending repositories for your request. Please try to modify it or to refresh this page.</li> 
+        : displayed.map(item => <ListItem data={item} key={keyGenerator()} />); 
+}
+    
 
 const List = () => {
     const { repos, params, sortSettings, fetchRepos, setParams, setSortSettings } = useReposStore();
+    const [loading, setLoading] = useState(true);
 
     //get params from localstorage
     useEffect(() => {
@@ -25,7 +32,7 @@ const List = () => {
                 runInAction(()=>setParams("language", _params.language));
             };
         })
-    }, [setParams])
+    }, [setParams]);
 
     //get sortSettings from localstorage
     useEffect(() => {
@@ -36,7 +43,7 @@ const List = () => {
                 runInAction(()=>setSortSettings(_sortSettings.sorting, _sortSettings.minmax));
             };
         })
-    }, [setSortSettings])
+    }, [setSortSettings]);
 
     //save to localstorage
     useEffect(() => 
@@ -45,7 +52,7 @@ const List = () => {
             if(!json) return;
             localStorage.setItem("params", json);
         }),
-    [params])
+    [params]);
 
     //save sortSettings to localestorage
     useEffect(() => 
@@ -54,21 +61,51 @@ const List = () => {
             if(!json) return;
             localStorage.setItem("sortSettings", json);
         }),
-    [sortSettings])
+    [sortSettings]);
 
     //fetching repositories
     useEffect(() => {
-        fetchRepos();
-    },[fetchRepos])
+        autorun(()=>{
+            fetchRepos();
+            setLoading(false);
+        })
+    },[fetchRepos]);
     
-    const showRepos = repos.displayed.length > 0 ? createItems(repos.displayed) : null;
+    const showRepos = loading || !repos.displayed
+        ? (<Loader
+            type="ThreeDots"
+            color="#84001D"
+            height={100}
+            width={100}
+            timeout={3000}
+            />)
+        : createItems(repos);
 
     return (
-        <div>
+        <StyledWrapper>
             <FiltersBar />
-            {showRepos}
-        </div>
-    )
+            <StyledUl aria-live="polite">
+                {showRepos}
+            </StyledUl>
+        </StyledWrapper>
+    );
 };
 
 export default observer(List);
+
+const StyledWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+`;
+
+const StyledUl = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+`;
