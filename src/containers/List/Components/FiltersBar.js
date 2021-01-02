@@ -77,7 +77,7 @@ const FiltersBar = () => {
                 />
             </StyledDiv>
             <StyledDiv>
-                <label key={keyGenerator()} htmlFor="sort" />
+                <label key={keyGenerator()} htmlFor="sort">Sorting</label>
                     <select 
                     key={keyGenerator()}
                     onChange={(e) => sortHandler(e)}
@@ -99,17 +99,18 @@ export default observer(FiltersBar);
 const StyledWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
+    grid-row-gap: 10px;
     width: 100%;
     margin: 1vh 0 2vh;
     padding-bottom: 2vh;
     border-bottom: 1px solid ${(props) => props.theme.colors.button};
     @media (min-width: 533px){
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 21px 21px;
+        grid-template-rows: 1fr 2fr;
     }
     @media (min-width: 823px){
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 21px;
+        grid-template-rows: 1fr;
     }
 `;
 
@@ -132,7 +133,6 @@ const StyledDiv = styled.div`
     margin-left: auto;
     select{
         width: 100%;
-        height: 100%;
     }
     @media (min-width: 533px){
         grid-row: 2;

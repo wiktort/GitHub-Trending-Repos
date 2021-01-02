@@ -36,7 +36,7 @@ const Select = props => {
     const id = "selectLanguage";
     return(
         <div>
-            <label key={keyGenerator()} htmlFor={id} />
+            <label key={keyGenerator()} htmlFor={id}>Language filtering</label>
                 <select 
                 key={keyGenerator()}
                 onChange={(e) => callback(e)}
