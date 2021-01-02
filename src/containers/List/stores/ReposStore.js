@@ -8,15 +8,20 @@ class ReposStore {
         base: [],
         displayed: []
     }
-    _params = {}
+
+    params = {}
+
+    sortSettings = {
+        sorting: false,
+        minmax: -1
+    }
 
     constructor(){
         makeAutoObservable(this);
     }
 
     fetchRepos = () => {
-        const url = createURL({params: this._params});
-    
+        const url = createURL({params: this.params});
         getData(url)
         .then(data => {
             runInAction(()=>{
@@ -26,7 +31,15 @@ class ReposStore {
         })
     }
 
-    sortRepos = (sorting, minmax) => {
+    setParams = (param, value) => this.params[param] = value
+
+    setSortSettings = (sorting, minmax) => {
+        this.sortSettings.sorting = sorting;
+        this.sortSettings.minmax = minmax;
+    }
+
+    sortRepos = () => {
+        const { sorting, minmax } = this.sortSettings;
         if (!sorting) { 
             this.repos.displayed = [...this.repos.base];
             return;
