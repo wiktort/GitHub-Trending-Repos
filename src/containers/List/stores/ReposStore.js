@@ -27,6 +27,7 @@ class ReposStore {
             runInAction(()=>{
                 this.repos.base = data;
                 this.repos.displayed = data;
+                this.sortRepos();
             });
         })
     }

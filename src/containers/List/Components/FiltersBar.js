@@ -44,11 +44,7 @@ const FiltersBar = () => {
 
     useEffect(()=>{
         setLoading(false)
-    },[])
-
-    useEffect(() => {
-        sortRepos();
-    }, [sortRepos, loading])
+    },[]); 
 
     const filtersHandler = param => {
         const _param = param; 
