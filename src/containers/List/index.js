@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { observer } from "mobx-react-lite";
 import { autorun, runInAction } from 'mobx';
 import styled from 'styled-components';
-import Loader from 'react-loader-spinner';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import { useReposStore } from "./stores/hooks";
 import ListItem from './Components/ListItem';
 import FiltersBar from './Components/FiltersBar';
+import MyLoader from '../../Shared/Loader';
 
 import { keyGenerator } from '../../Shared/helpers';
 
@@ -20,7 +19,6 @@ const createItems = ({ displayed, noData }) => {
 
 const List = () => {
     const { repos, params, sortSettings, fetchRepos, setParams, setSortSettings } = useReposStore();
-    const [loading, setLoading] = useState(true);
 
     //get params from localstorage
     useEffect(() => {
@@ -67,18 +65,11 @@ const List = () => {
     useEffect(() => {
         autorun(()=>{
             fetchRepos();
-            setLoading(false);
         })
     },[fetchRepos]);
     
-    const showRepos = loading || !repos.displayed
-        ? (<Loader
-            type="ThreeDots"
-            color="#84001D"
-            height={100}
-            width={100}
-            timeout={3000}
-            />)
+    const showRepos = repos.loading || !repos.displayed
+        ? <MyLoader />
         : createItems(repos);
 
     return (

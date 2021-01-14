@@ -7,7 +7,8 @@ class ReposStore {
     repos = {
         base: [],
         displayed: [],
-        noData: false
+        noData: false,
+        loading: true
     }
 
     params = {}
@@ -32,11 +33,15 @@ class ReposStore {
                 this.repos.base = data;
                 this.repos.displayed = data;
                 this.sortRepos();
+                this.repos.loading = false;
             });
         })
     }
 
-    setParams = (param, value) => this.params[param] = value
+    setParams = (param, value) => {
+        this.params[param] = value; 
+        this.repos.loading = true;
+    }
 
     setSortSettings = (sorting, minmax) => {
         this.sortSettings.sorting = sorting;
