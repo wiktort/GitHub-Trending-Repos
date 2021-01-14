@@ -40,7 +40,7 @@ const createRadioButtons = (handler, checked) =>
     });
     
 const FiltersBar = () => {
-    const {params, fetchRepos, sortSettings, setParams, setSortSettings, sortRepos } = useReposStore();
+    const {params, sortSettings, setParams, setSortSettings, sortRepos } = useReposStore();
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
@@ -52,7 +52,6 @@ const FiltersBar = () => {
         return (e) => {
             const { value } = e.target;
             setParams(_param, value)
-            fetchRepos();
         };
     };
 
